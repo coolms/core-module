@@ -41,7 +41,11 @@ jobs:
           # runtime-only, so a list built from `require` alone installs fine
           # and then refuses to run. curl and phar are Composer's. pdo_sqlite
           # lets DBAL build a platform without a server.
-          extensions: none, ctype, dom, filter, json, libxml, mbstring, tokenizer, xml, xmlwriter, curl, phar
+          # zip: BundleArchiver builds and extracts backup bundles through
+          # ZipArchive, and composer.json requires ext-zip accordingly. Without
+          # it here the install refuses outright rather than failing later in a
+          # test -- which is the point of declaring it.
+          extensions: none, ctype, dom, filter, json, libxml, mbstring, tokenizer, xml, xmlwriter, curl, phar, zip
 
       - name: Validate composer.json
         run: composer validate --strict
