@@ -34,6 +34,7 @@
         "symfony/yaml": "^8.0"
     },
     "require-dev": {
+        "coolms/core-doctrine": "^1.0",
         "phpunit/phpunit": "^12.5"
     },
     "suggest": {
