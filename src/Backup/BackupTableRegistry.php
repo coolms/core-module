@@ -7,7 +7,9 @@ namespace CoolMS\CoreModule\Backup;
 use CoolMS\Core\Backup\BackupContributorInterface;
 use CoolMS\Core\Backup\BackupTier;
 use CoolMS\Core\Backup\DefersRestoreColumnsInterface;
+use CoolMS\Core\Backup\SyncedTableSetInterface;
 use CoolMS\Core\Backup\SyncsAsOwnedCollectionInterface;
+use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
@@ -39,7 +41,12 @@ use const PHP_INT_MAX;
  * the `App\:` services glob re-registering this class).
  */
 #[Autoconfigure(public: true)] // no runtime consumer yet (the change-feed listener, B.2.2); survive pruning
-final class BackupTableRegistry
+// The alias is what lets the persistence adapters ask `covers()`/`ownerColumnFor()`
+// through the Core contract instead of importing this class -- see
+// {@see SyncedTableSetInterface}. Without it their interface type-hint has
+// nothing to resolve to.
+#[AsAlias(SyncedTableSetInterface::class)]
+final class BackupTableRegistry implements SyncedTableSetInterface
 {
     /** @var array<string, true>|null memoised synced-table set (this is a singleton service) */
     private ?array $set = null;

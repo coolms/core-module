@@ -19,8 +19,8 @@
         "php": "^8.5",
         "ext-mbstring": "*",
         "ext-zip": "*",
-        "coolms/core": "^1.0",
-        "coolms/core-persistence-implementation": "^1.0",
+        "coolms/core": "^2.0",
+        "coolms/core-persistence-implementation": "^2.0",
         "psr/clock": "^1.0",
         "psr/log": "^3.0",
         "symfony/clock": "^8.0",
@@ -34,7 +34,7 @@
         "symfony/yaml": "^8.0"
     },
     "require-dev": {
-        "coolms/core-doctrine": "^1.0",
+        "coolms/core-doctrine": "^2.0",
         "phpunit/phpunit": "^12.5"
     },
     "suggest": {
@@ -57,5 +57,10 @@
         "sort-packages": true
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-v2-generation": "2.0.x-dev"
+        }
+    }
 }

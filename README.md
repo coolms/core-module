@@ -17,18 +17,19 @@ A *module* in this platform is the part that wires domain to infrastructure. A
 ## Installation
 
 ```bash
-composer require coolms/core-module
+composer require coolms/core-module coolms/core-doctrine
 ```
 
-> **An adapter is required, not optional.** This package requires the virtual
-> `coolms/core-persistence-implementation`, so Composer will refuse to install
-> it until something provides that. It is a hard failure by design — the
-> alternative is a platform that installs cleanly and then cannot persist
-> anything.
-
-```bash
-composer require coolms/core-doctrine   # provides the implementation
-```
+> **The adapter is part of the install, not a second step.** This package
+> requires the virtual `coolms/core-persistence-implementation`, and only an
+> adapter provides it, so `composer require coolms/core-module` on its own
+> cannot resolve — Composer reports that the virtual package "could not be found
+> in any version", which reads like a broken package rather than a missing
+> argument.
+>
+> The hard failure is by design. The alternative is a platform that installs
+> cleanly and then cannot persist anything. `coolms/core-doctrine` is the
+> adapter that exists today; substitute another if you write one.
 
 ## What is in here
 
