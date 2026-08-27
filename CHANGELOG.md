@@ -14,6 +14,17 @@ same commit as the change it describes.
 
 Rides the next Tuesday release train. Nothing here has shipped yet.
 
+### Fixed: the installation command in the readme names the adapter
+
+`composer require coolms/core-module` on its own cannot resolve. This package
+requires a virtual persistence-implementation package, and only an adapter
+provides one, so Composer reports that the virtual package "could not be found
+in any version" -- which reads like a broken package rather than a missing
+argument.
+
+The readme now leads with the command that works:
+`composer require coolms/core-module coolms/core-doctrine`.
+
 ### The v2 generation -- a version number, and nothing else
 
 This release moves `coolms/core-module` to `2.0.0` **without a single change to its
