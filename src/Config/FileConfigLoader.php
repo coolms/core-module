@@ -20,16 +20,48 @@ use Symfony\Component\Yaml\Yaml;
  */
 final readonly class FileConfigLoader implements ConfigLoaderInterface
 {
+    /**
+     * @param list<string> $moduleConfigDirs every registered bundle's config/
+     *                                       that carries module YAML, newest
+     *                                       from ModuleConfigDirsPass
+     */
     public function __construct(
         #[Autowire('%kernel.project_dir%/config')]
         private string $configDir,
         private LoggerInterface $logger,
+        #[Autowire('%coolms.module_config_dirs%')]
+        private array $moduleConfigDirs = [],
     ) {
+    }
+
+    /**
+     * Roots to scan, application FIRST.
+     *
+     * This loader returns the first match, so first means highest priority: an
+     * installation can override a definition a package ships by putting its own
+     * file in `config/modules`, and never the other way round.
+     *
+     * @return list<string>
+     */
+    private function roots(): array
+    {
+        $roots = [$this->configDir];
+        foreach ($this->moduleConfigDirs as $dir) {
+            $roots[] = $dir;
+        }
+
+        return $roots;
     }
 
     public function load(string $type, string $id, ?string $themeSlug = null): ?array
     {
-        $base = $this->scanForConfig($this->configDir . '/modules', $type, $id);
+        $base = null;
+        foreach ($this->roots() as $root) {
+            $base = $this->scanForConfig($root . '/modules', $type, $id);
+            if (null !== $base) {
+                break;
+            }
+        }
 
         if (null !== $themeSlug) {
             $override = $this->scanForConfig($this->configDir . '/themes/' . $themeSlug, $type, $id);

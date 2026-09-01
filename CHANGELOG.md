@@ -10,9 +10,32 @@ major number means here.
 history when this file was created. Every entry after that is written in the
 same commit as the change it describes.
 
-## Unreleased -- 2.0.0
+## 2.0.0-alpha1 - 2026-09-01
 
-Rides the next Tuesday release train. Nothing here has shipped yet.
+**A pre-release. It carries no compatibility promise**, which is the honest
+statement of where the platform is: the shape is still moving, and a stable tag
+would be a promise that cannot be kept yet.
+
+Composer will not install it under default stability. Either set
+`"minimum-stability": "alpha"` with `"prefer-stable": true`, or ask for it per
+package with `^2.0@alpha`. A bare `composer require coolms/core-module` takes the
+newest **stable** release instead -- which is the previous generation -- and
+reports success while doing it.
+
+Releases are suspended while development is moving fast and there are no
+external consumers of these packages. This tag establishes the baseline the
+documentation describes; nothing follows it until somebody outside the project
+installs one, at which point the release policy resumes.
+
+### Added: the config loader reads packages' `config/` too
+
+`FileConfigLoader` scans every registered bundle's `config/modules` in addition
+to the application's, so a package ships a definition instead of asking an
+integrator to install one into the application's own config.
+
+The application is scanned FIRST. This loader returns the first match, so first
+is highest priority and an installation can always override what a package
+ships -- never the other way round.
 
 ### Fixed: the installation command in the readme names the adapter
 
